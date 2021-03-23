@@ -20,4 +20,11 @@
         app:rippleColor="@color/blue_900"
         app:srcCompat="@drawable/ic_add_circle_outline_24px" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollingCache="true"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
