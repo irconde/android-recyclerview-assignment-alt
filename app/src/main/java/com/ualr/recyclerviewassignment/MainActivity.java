@@ -8,6 +8,7 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ualr.recyclerviewassignment.Utils.DataGenerator;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements AdapterListBasic.
         super.onCreate(savedInstanceState);
         mBinding = ActivityListMultiSelectionBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         initRecyclerView();
     }
 
