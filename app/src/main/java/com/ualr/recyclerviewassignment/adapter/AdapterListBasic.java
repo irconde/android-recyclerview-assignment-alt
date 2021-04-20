@@ -47,6 +47,7 @@ public class AdapterListBasic extends RecyclerView.Adapter {
         RecyclerView.ViewHolder vh;
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_inbox, parent,false);
         vh = new ItemViewHolder(itemView);
+
         return vh;
     }
 
@@ -78,10 +79,11 @@ public class AdapterListBasic extends RecyclerView.Adapter {
         if (inbox.isSelected()) {
             itemViewHolder.lyt_parent.setBackgroundColor(selectedColor);
             itemViewHolder.senderIcon.setBackground(selectedCircle);
-            itemViewHolder.senderIcon.setCompoundDrawablesWithIntrinsicBounds(selectedIndicator,null,null,null);
+            itemViewHolder.senderIcon.setText("");
+            itemViewHolder.senderIcon.setCompoundDrawablesRelativeWithIntrinsicBounds(selectedIndicator, null,null,null);
         }
         else {
-            itemViewHolder.lyt_parent.setBackgroundColor((Color.TRANSPARENT));
+            itemViewHolder.lyt_parent.setBackgroundColor(Color.TRANSPARENT);
             itemViewHolder.senderIcon.setBackground(defaultCircle);
             itemViewHolder.senderIcon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
 
