@@ -2,6 +2,10 @@ package com.ualr.recyclerviewassignment.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,22 +23,80 @@ import com.ualr.recyclerviewassignment.model.Inbox;
 import java.util.List;
 
 public class AdapterListBasic extends RecyclerView.Adapter {
-
     private List<Inbox> mItems;
-
+    private Context mContext;
+    private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
         void onItemClick(View view, Inbox obj, int position);
-    }
 
-    private OnItemClickListener mListener;
-
-    public AdapterListBasic(List<Inbox> items) {
-        this.mItems = items;
     }
 
     public void setOnItemClickListener(final OnItemClickListener itemClickListener) {
         this.mListener = itemClickListener;
+    }
+
+    public AdapterListBasic(Context context, List<Inbox> items) {
+        this.mItems = items;
+        this.mContext = context;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder vh;
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_inbox, parent,false);
+        vh = new ItemViewHolder(itemView);
+        return vh;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+        final Inbox inbox = mItems.get(position);
+
+        // Color resources
+        int selectedColor = mContext.getResources().getColor(R.color.grey_20);
+        int selectedIconColor = mContext.getResources().getColor(R.color.blue_300);
+        int defaultIconColor = mContext.getResources().getColor(R.color.blue_grey_600);
+
+        // Drawable resources and initializations
+        Drawable defaultCircle = mContext.getDrawable(R.drawable.shape_circle);
+        Drawable selectedIndicator = mContext.getDrawable(R.drawable.ic_baseline_check_24);
+        Drawable selectedCircle = mContext.getDrawable(R.drawable.shape_circle);
+        defaultCircle.mutate().setColorFilter(defaultIconColor, PorterDuff.Mode.SRC_IN);
+        selectedCircle.mutate().setColorFilter(selectedIconColor, PorterDuff.Mode.SRC_IN);
+        selectedCircle.setBounds(0, 0, 24, 24);
+
+        //Set standard content
+        itemViewHolder.senderIcon.setText(inbox.getFrom().substring(0,1));
+        itemViewHolder.senderName.setText(inbox.getFrom());
+        itemViewHolder.senderEmail.setText(inbox.getEmail());
+        itemViewHolder.emailPreview.setText(R.string.lorem_ipsum);
+        itemViewHolder.emailTimestamp.setText(inbox.getDate());
+
+        if (inbox.isSelected()) {
+            itemViewHolder.lyt_parent.setBackgroundColor(selectedColor);
+            itemViewHolder.senderIcon.setBackground(selectedCircle);
+            itemViewHolder.senderIcon.setCompoundDrawablesWithIntrinsicBounds(selectedIndicator,null,null,null);
+        }
+        else {
+            itemViewHolder.lyt_parent.setBackgroundColor((Color.TRANSPARENT));
+            itemViewHolder.senderIcon.setBackground(defaultCircle);
+            itemViewHolder.senderIcon.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.mItems.size();
+    }
+
+    public void addItem(int position, Inbox item){
+
+        mItems.add(position, item);
+        notifyItemInserted(position);
     }
 
     public void removeItem(int position){
@@ -46,93 +108,42 @@ public class AdapterListBasic extends RecyclerView.Adapter {
         notifyItemRangeChanged(position, getItemCount());
     }
 
-    public void addItem(int position, Inbox item){
-
-        mItems.add(position, item);
-        notifyItemInserted(position);
+    public void clearAllSelections() {
+        for (Inbox mItem : mItems) {
+            mItem.setSelected(false);
+        }
+        notifyDataSetChanged();
     }
-
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater lyInflater = LayoutInflater.from(parent.getContext());
-        View itemView = lyInflater.inflate(R.layout.items_inbox, parent, false);
-        RecyclerView.ViewHolder vh = new ItemViewHolder(itemView);
-        return vh;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int index) {
-        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-        Inbox i = mItems.get(index);
-
-
-        itemViewHolder.name.setText(i.getFrom());
-        itemViewHolder.email.setText(i.getEmail());
-        itemViewHolder.date.setText(i.getDate());
-        itemViewHolder.imageLetter.setText(Character.toString(i.getFrom().charAt(0)));
-//        itemViewHolder.image.setImageResource();
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mItems.size();
-    }
-
 
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView imageLetter;
-        public TextView name;
-        public TextView email;
-        public TextView date;
-        public RelativeLayout lyt_image;
-        public ImageView imageX;
-
+        public TextView senderIcon;
+        public TextView senderName;
+        public TextView senderEmail;
+        public TextView emailPreview;
+        public TextView emailTimestamp;
         public View lyt_parent;
 
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            lyt_image = itemView.findViewById(R.id.lyt_image);
-            imageLetter = itemView.findViewById(R.id.image_letter);
-            name = itemView.findViewById(R.id.name);
-            email = itemView.findViewById(R.id.email);
-            date = itemView.findViewById(R.id.date);
+
+            senderIcon = itemView.findViewById(R.id.sender_icon);
+            senderName = itemView.findViewById(R.id.name);
+            senderEmail = itemView.findViewById(R.id.email);
+            emailPreview = itemView.findViewById(R.id.info);
+            emailTimestamp = itemView.findViewById(R.id.date);
             lyt_parent = itemView.findViewById(R.id.lyt_parent);
-            imageX = itemView.findViewById(R.id.image_X);
 
             lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-
-                    mListener.onItemClick(v, mItems.get(getLayoutPosition()), getLayoutPosition());
-
+                public void onClick(View view) {
+                    mListener.onItemClick(view, mItems.get(getLayoutPosition()), getLayoutPosition());
                 }
             });
-            lyt_image.setOnClickListener(new View.OnClickListener(){
-
-
-                @Override
-                public void onClick(View v) {
-
-//                    mListener.onItemClick(v, mItems.get(getLayoutPosition()), getLayoutPosition());
-                    imageX.setImageResource(R.drawable.ic_delete_24px);
-                    imageLetter.setText("");
-
-                }
-            });
-            imageX.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    removeItem(getLayoutPosition());
-                    imageX.setImageResource(R.drawable.shape_circle);
-
-                }
-            });
+//
         }
     }
 

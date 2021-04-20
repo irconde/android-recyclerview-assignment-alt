@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 
@@ -29,63 +30,54 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AdapterListBasic.OnItemClickListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private FloatingActionButton mFAB;
+    private static final int DEFAULT_POS = 0;
 
-    private ActivityListMultiSelectionBinding mBinding;
+    private FloatingActionButton mFAB;
+    private AdapterListBasic mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = ActivityListMultiSelectionBinding.inflate(getLayoutInflater());
-        setContentView(mBinding.getRoot());
+        setContentView(R.layout.activity_list_multi_selection);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initRecyclerView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
     private void initRecyclerView() {
-        // TODO 01. Generate the item list to be displayed using the DataGenerator class
-
-
         List<Inbox> items = DataGenerator.getInboxData(this);
         items.addAll( DataGenerator.getInboxData(this));
-        items.addAll( DataGenerator.getInboxData(this));
 
-        // TODO 03. Do the setup of a new RecyclerView instance to display the item list properly
-
-        RecyclerView inboxListView = mBinding.recyclerView;
-
-        // TODO 04. Define the layout of each item in the list
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        inboxListView.setLayoutManager(layoutManager);
-
-        // TODO 09. Create a new instance of the created Adapter class and bind it to the RecyclerView instance created in step 03
-        final AdapterListBasic adapter = new AdapterListBasic(items);
-
-        adapter.setOnItemClickListener(this);
-        inboxListView.setAdapter(adapter);
-
-
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mAdapter = new AdapterListBasic(this, items);
+        mAdapter.setOnItemClickListener(this);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
 
         mFAB = findViewById(R.id.fab);
         mFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO 10. Invoke the method created to a new item to the top of the list so it's
-                //  triggered when the user taps the Floating Action Button
-
-                adapter.addItem(0,DataGenerator.getRandomInboxItem(view.getContext()));
-                mBinding.recyclerView.scrollToPosition(0);
+                mAdapter.addItem(DEFAULT_POS,DataGenerator.getRandomInboxItem(view.getContext()));
+                recyclerView.scrollToPosition(0);
             }
         });
     }
 
     @Override
     public void onItemClick(View view, Inbox obj, int position) {
+        mAdapter.clearAllSelections();
+        obj.toggleSelection();
+        mAdapter.notifyItemChanged(position);
 
-
-        Log.d(TAG, String.format("The user %s has tapped on the iem %d", obj.getFrom(), position));
     }
 }
