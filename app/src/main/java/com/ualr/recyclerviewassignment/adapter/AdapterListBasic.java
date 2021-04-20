@@ -45,7 +45,7 @@ public class AdapterListBasic extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.items_inbox, parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_list, parent,false);
         vh = new ItemViewHolder(itemView);
 
         return vh;
@@ -130,7 +130,6 @@ public class AdapterListBasic extends RecyclerView.Adapter {
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-
 
             senderIcon = itemView.findViewById(R.id.sender_icon);
             senderName = itemView.findViewById(R.id.name);
