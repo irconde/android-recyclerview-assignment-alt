@@ -21,7 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ualr.recyclerviewassignment.Utils.DataGenerator;
 
 import com.ualr.recyclerviewassignment.adapter.AdapterListBasic;
-import com.ualr.recyclerviewassignment.databinding.ActivityListMultiSelectionBinding;
+
+import com.ualr.recyclerviewassignment.databinding.ActivityMainBinding;
 import com.ualr.recyclerviewassignment.model.Inbox;
 
 import java.util.List;
@@ -29,39 +30,46 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int DEFAULT_POS = 0;
+    private static final String INBOX_LIST_FRAGMENT_TAG = "InboxListFragment" ;
+
 
     private FloatingActionButton mFAB;
     private AdapterListBasic mAdapter;
     private InboxListFragment mFragment;
 
+    private ActivityMainBinding mBinding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFragment = new InboxListFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frame, new InboxListFragment());
+        ft.replace(R.id.frame, mFragment,INBOX_LIST_FRAGMENT_TAG);
         ft.commit();
+
+
         mFAB = findViewById(R.id.fab);
-        mFragment = (InboxListFragment) getSupportFragmentManager().findFragmentById(R.id.frame);
         mFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFABButtonClicked();
+                mFragment.addInboxItem();
+
+
             }
         });
 
     }
 
-    private void onFABButtonClicked() {
-        if (mFragment != null && mFragment.isInLayout()) {
-            mFragment.addInboxItem();
-        }
-    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ualr.recyclerviewassignment.Utils.DataGenerator;
 import com.ualr.recyclerviewassignment.adapter.AdapterListBasic;
+import com.ualr.recyclerviewassignment.databinding.InboxListFragmentBinding;
 import com.ualr.recyclerviewassignment.model.Inbox;
 import com.ualr.recyclerviewassignment.model.InboxViewModel;
 
@@ -22,6 +23,7 @@ import java.util.List;
 public class InboxListFragment extends Fragment implements AdapterListBasic.OnItemClickListener {
     private static final int DEFAULT_POS = 0;
     private AdapterListBasic mAdapter;
+    private InboxListFragmentBinding mBinding;
     private InboxViewModel viewModel;
 
 
@@ -29,6 +31,7 @@ public class InboxListFragment extends Fragment implements AdapterListBasic.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(getActivity()).get(InboxViewModel.class);
+        mBinding = InboxListFragmentBinding.inflate(getLayoutInflater());
     }
 
     @Nullable
@@ -59,8 +62,10 @@ public class InboxListFragment extends Fragment implements AdapterListBasic.OnIt
 
     }
 
+
     public void addInboxItem(){
         mAdapter.addItem(DEFAULT_POS,DataGenerator.getRandomInboxItem(getActivity()));
+        mBinding.recyclerView.scrollToPosition(0);
     }
 
 }
