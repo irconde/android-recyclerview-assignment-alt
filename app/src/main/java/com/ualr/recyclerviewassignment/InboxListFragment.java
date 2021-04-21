@@ -23,7 +23,7 @@ import java.util.List;
 public class InboxListFragment extends Fragment implements AdapterListBasic.OnItemClickListener {
     private static final int DEFAULT_POS = 0;
     private AdapterListBasic mAdapter;
-    private InboxListFragmentBinding mBinding;
+    private RecyclerView recyclerView;
     private InboxViewModel viewModel;
 
 
@@ -31,7 +31,6 @@ public class InboxListFragment extends Fragment implements AdapterListBasic.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(getActivity()).get(InboxViewModel.class);
-        mBinding = InboxListFragmentBinding.inflate(getLayoutInflater());
     }
 
     @Nullable
@@ -49,7 +48,7 @@ public class InboxListFragment extends Fragment implements AdapterListBasic.OnIt
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager((MainActivity)getActivity());
         mAdapter = new AdapterListBasic((MainActivity) getActivity(), items);
         mAdapter.setOnItemClickListener(this);
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
     }
@@ -59,13 +58,12 @@ public class InboxListFragment extends Fragment implements AdapterListBasic.OnIt
         mAdapter.clearAllSelections();
         obj.toggleSelection();
         mAdapter.notifyItemChanged(position);
-
     }
 
 
     public void addInboxItem(){
         mAdapter.addItem(DEFAULT_POS,DataGenerator.getRandomInboxItem(getActivity()));
-        mBinding.recyclerView.scrollToPosition(0);
+        recyclerView.scrollToPosition(0);
     }
 
 }
