@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mFragment.addInboxItem();
 
-
             }
         });
 
@@ -78,11 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.delete_action:
-//
-//
-//        }
+        switch (item.getItemId()){
+            case R.id.delete_action:
+                mFragment.removeInboxItem();
+
+
+
+        }
         return true;
     }
 

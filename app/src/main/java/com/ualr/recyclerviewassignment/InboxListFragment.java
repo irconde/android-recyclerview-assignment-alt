@@ -65,7 +65,11 @@ public class InboxListFragment extends Fragment implements AdapterListBasic.OnIt
 
     public void addInboxItem(){
         mAdapter.addItem(DEFAULT_POS,DataGenerator.getRandomInboxItem(getActivity()));
-        mBinding.recyclerView.scrollToPosition(0);
+        ;
+    }
+
+    public void removeInboxItem(){
+        mAdapter.;);
     }
 
 }
