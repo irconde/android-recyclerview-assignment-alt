@@ -117,6 +117,11 @@ public class AdapterListBasic extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void updateItems(List<Inbox> inboxList) {
+        this.mItems = inboxList;
+        notifyDataSetChanged();
+    }
+
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
 

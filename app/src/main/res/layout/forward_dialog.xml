@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="60dp"
+    android:layout_gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/forward_message"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/grey_3"
+        android:textSize="20sp"
+        android:padding="@dimen/spacing_mlarge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/to_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/To"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/to"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sender_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/email_address"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@+id/To"
+            app:layout_constraintTop_toTopOf="@+id/To"
+            app:layout_constraintBottom_toBottomOf="@+id/To"
+            android:layout_marginStart="@dimen/spacing_medium"/>
+
+        <TextView
+            android:id="@+id/Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            app:layout_constraintTop_toBottomOf="@+id/To"
+            app:layout_constraintEnd_toEndOf="@+id/To"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sender_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@+id/Name"
+            app:layout_constraintTop_toTopOf="@+id/Name"
+            app:layout_constraintBottom_toBottomOf="@+id/Name"
+            android:layout_marginStart="@dimen/spacing_medium"/>
+
+
+        <TextView
+            android:id="@+id/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text"
+            android:textSize="12sp"
+            android:layout_marginTop="@dimen/spacing_mlarge"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            app:layout_constraintTop_toBottomOf="@+id/Name"
+            app:layout_constraintEnd_toEndOf="@+id/Name"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sender_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
+            android:paddingTop="0dp"
+            android:hint="@string/lorem_ipsum"
+            android:textSize="12sp"
+
+            app:layout_constraintLeft_toRightOf="@+id/Text"
+            app:layout_constraintTop_toTopOf="@+id/Text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/grey_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/to_constraint"
+        android:layout_marginEnd="@dimen/spacing_large"/>
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

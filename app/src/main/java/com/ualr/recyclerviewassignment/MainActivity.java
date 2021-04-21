@@ -2,12 +2,14 @@ package com.ualr.recyclerviewassignment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.ualr.recyclerviewassignment.Utils.DataGenerator;
 
 import com.ualr.recyclerviewassignment.adapter.AdapterListBasic;
@@ -34,15 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FloatingActionButton mFAB;
+
     private AdapterListBasic mAdapter;
     private InboxListFragment mFragment;
-
+    private AdapterListBasic.OnItemClickListener mOnItemClickListener;
     private ActivityMainBinding mBinding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
@@ -60,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mFragment.addInboxItem();
 
             }
@@ -80,11 +86,23 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.delete_action:
                 mFragment.removeInboxItem();
-
-
-
+                displaySnackBar();
+                return true;
+            case R.id.forward_action:
+                mFragment.forwardEmail();
+                return true;
+            default:
+                return true;
         }
-        return true;
+
     }
+    public void displaySnackBar(){
+        CoordinatorLayout parentView = findViewById(R.id.lyt_parent);
+        String message = getResources().getString(R.string.message_email_deleted);
+        int message_duration = Snackbar.LENGTH_LONG;
+        Snackbar snackbar = Snackbar.make(parentView, message, message_duration);
+        snackbar.show();
+    }
+
 
 }
